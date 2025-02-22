@@ -1,4 +1,4 @@
-###APIVeil
+APIVeil
 
 This project consists of two servers:
 
