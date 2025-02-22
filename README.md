@@ -78,11 +78,9 @@ g++ -std=c++17 -IC:\vcpkg\installed\x64-windows\include -LC:\vcpkg\installed\x64
 ```
 * You should see: Proxy server listening on port 3000
 
-# Echo and Proxy Server Testing
+## Echo and Proxy Server Testing
 
-This README provides instructions for testing both the Echo Server and the Proxy Server.
-
-## A. Test the Echo Server Directly
+### A. Test the Echo Server Directly
 
 1. Open a new terminal window.
 2. Run the following `curl` command:
@@ -97,7 +95,7 @@ This README provides instructions for testing both the Echo Server and the Proxy
    {"test": "hello"}
    ```
 
-## B. Test the Proxy Server
+### B. Test the Proxy Server
 
 1. Send a POST request to the proxy on port 3000:
 
@@ -127,7 +125,7 @@ This README provides instructions for testing both the Echo Server and the Proxy
    {"processed": "The capital of France is Paris."}
    ```
 
-## Notes
+### Notes
 - Ensure both the Echo Server (on port `4000`) and the Proxy Server (on port `3000`) are running before executing these commands.
 - The proxy server must be correctly configured to interact with the OpenAI API and the Echo Server.
 - Use `curl -v` to see detailed request and response headers for debugging if necessary.
