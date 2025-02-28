@@ -38,30 +38,30 @@ void ProxyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRe
     response.setContentType("application/json");
     response.send() << "{ \"status\": \"received\" }";
 
-    // std::string processed_text = "";
-    // try
-    // {
-    //     processed_text = getProcessedText(incomingBody, response);
-    // }
-    // catch (Exception &ex)
-    // {
-    //     std::cerr << "Error calling OpenAI API: " << ex.displayText() << std::endl;
-    //     response.setStatus(HTTPResponse::HTTP_INTERNAL_SERVER_ERROR);
-    //     response.send() << "Error processing request with OpenAI API.";
-    //     return;
-    // }
+    std::string processed_text = "";
+    try
+    {
+        processed_text = getProcessedText(incomingBody, response);
+    }
+    catch (Exception &ex)
+    {
+        std::cerr << "Error calling OpenAI API: " << ex.displayText() << std::endl;
+        response.setStatus(HTTPResponse::HTTP_INTERNAL_SERVER_ERROR);
+        response.send() << "Error processing request with OpenAI API.";
+        return;
+    }
 
-    // try
-    // {
-    //     std::string base_api_response = forwardRequest(processed_text);
-    //     response.setStatus(HTTPResponse::HTTP_OK);
-    //     response.send() << base_api_response;
-    // }
-    // catch (Exception &ex)
-    // {
-    //     std::cerr << "Error forwarding to base API: " << ex.displayText() << std::endl;
-    //     response.setStatus(HTTPResponse::HTTP_INTERNAL_SERVER_ERROR);
-    //     response.send() << "Error forwarding processed request to base API.";
-    //     return;
-    // }
+    try
+    {
+        std::string base_api_response = forwardRequest(processed_text);
+        response.setStatus(HTTPResponse::HTTP_OK);
+        response.send() << base_api_response;
+    }
+    catch (Exception &ex)
+    {
+        std::cerr << "Error forwarding to base API: " << ex.displayText() << std::endl;
+        response.setStatus(HTTPResponse::HTTP_INTERNAL_SERVER_ERROR);
+        response.send() << "Error forwarding processed request to base API.";
+        return;
+    }
 }
