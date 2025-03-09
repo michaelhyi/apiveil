@@ -1,11 +1,11 @@
 #include <Poco/JSON/Object.h>
 
-#include "network_traffic.h"
+#include "network_log.h"
 #include "../include/nlohmann/json.hpp"
 
 using namespace Poco::JSON;
 
-NetworkTraffic::NetworkTraffic(std::string network_traffic_id, std::string method, std::string path, time_t timestamp, std::string body, std::unordered_map<std::string, std::string> headers, int status_code)
+NetworkLog::NetworkLog(std::string network_traffic_id, std::string method, std::string path, time_t timestamp, std::string body, std::unordered_map<std::string, std::string> headers, int status_code)
 {
     this->network_traffic_id = network_traffic_id;
     this->method = method;
@@ -16,7 +16,7 @@ NetworkTraffic::NetworkTraffic(std::string network_traffic_id, std::string metho
     this->status_code = status_code;
 }
 
-NetworkTraffic::NetworkTraffic(std::string method, std::string path, std::string body, std::unordered_map<std::string, std::string> headers, int status_code)
+NetworkLog::NetworkLog(std::string method, std::string path, std::string body, std::unordered_map<std::string, std::string> headers, int status_code)
 {
     this->method = method;
     this->path = path;
@@ -26,63 +26,63 @@ NetworkTraffic::NetworkTraffic(std::string method, std::string path, std::string
     this->status_code = status_code;
 }
 
-std::string NetworkTraffic::getNetworkTrafficId() {
+std::string NetworkLog::getNetworkTrafficId() {
     return this->network_traffic_id;
 }
 
-std::string NetworkTraffic::getMethod() {
+std::string NetworkLog::getMethod() {
     return this->method;
 }
 
-std::string NetworkTraffic::getPath() {
+std::string NetworkLog::getPath() {
     return this->path;
 }
 
-time_t NetworkTraffic::getTimestamp() {
+time_t NetworkLog::getTimestamp() {
     return this->timestamp;
 }
 
-std::string NetworkTraffic::getBody() {
+std::string NetworkLog::getBody() {
     return this->body;
 }
 
-std::unordered_map<std::string, std::string> NetworkTraffic::getHeaders() {
+std::unordered_map<std::string, std::string> NetworkLog::getHeaders() {
     return this->headers;
 }
 
-int NetworkTraffic::getStatusCode() {
+int NetworkLog::getStatusCode() {
     return this->status_code;
 }
 
-void NetworkTraffic::setNetworkTrafficId(std::string network_traffic_id) {
+void NetworkLog::setNetworkTrafficId(std::string network_traffic_id) {
     this->network_traffic_id = network_traffic_id;
 }
 
-void NetworkTraffic::setMethod(std::string method) {
+void NetworkLog::setMethod(std::string method) {
     this->method = method;
 }
 
-void NetworkTraffic::setPath(std::string path) {
+void NetworkLog::setPath(std::string path) {
     this->path = path;
 }
 
-void NetworkTraffic::setTimestamp(time_t timestamp) {
+void NetworkLog::setTimestamp(time_t timestamp) {
     this->timestamp = timestamp;
 }
 
-void NetworkTraffic::setBody(std::string body) {
+void NetworkLog::setBody(std::string body) {
     this->body = body;
 }
 
-void NetworkTraffic::setHeaders(std::unordered_map<std::string, std::string> headers) {
+void NetworkLog::setHeaders(std::unordered_map<std::string, std::string> headers) {
     this->headers = headers;
 }
 
-void NetworkTraffic::setStatusCode(int status_code) {
+void NetworkLog::setStatusCode(int status_code) {
     this->status_code = status_code;
 }
 
-std::string NetworkTraffic::toJson() {
+std::string NetworkLog::toJson() {
     Object obj;
     obj.set("network_traffic_id", this->network_traffic_id);
     obj.set("method", this->method);

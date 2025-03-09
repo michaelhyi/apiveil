@@ -3,80 +3,73 @@
 #include <Poco/JSON/Object.h>
 #include <Poco/JSON/Parser.h>
 #include <Poco/Net/HTTPServerRequest.h>
+#include <Poco/Net/HTTPClientSession.h>
 
-#include "network_traffic.h"
+#include "include/nlohmann/json.hpp"
+#include "network_log.h"
 #include "proxy_request_handler.h"
+#include "proxy_request_handler_util.h"
 #include "openai_service.h"
-#include "proxy_util.h"
 #include "web_socket_manager.h"
 
 using namespace Poco::JSON;
 using namespace Poco;
 
+const std::string BASE_API_HOST = "127.0.0.1";
+
 void ProxyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse &response)
 {
-    // Get the Incoming Request
-    std::stringstream incomingStream;
-    Poco::StreamCopier::copyStream(request.stream(), incomingStream);
-    std::string incomingBody = incomingStream.str();
-    std::unordered_map<std::string, std::string> headers;
+    std::string request_body = getBody(request);
+    std::unordered_map<std::string, std::string> request_headers = getHeaders(request);
 
-    std::cout << "Received request for " << request.getURI() << std::endl;
-    std::cout << "Request body: " << incomingBody << std::endl;
+    std::cout << "Received request for " << request.getURI() << "\n";
+    std::cout << "Request body: " << request_body << "\n";
 
-    Poco::Net::NameValueCollection::ConstIterator it = request.begin();
-    Poco::Net::NameValueCollection::ConstIterator end = request.end();
-    for (; it != end; ++it) {
-        headers.insert({it->first, it->second});
-        std::cout << "Received header: " << it->first << " = " << it->second << std::endl;
-    }
-
-    NetworkTraffic networkTraffic = NetworkTraffic(
+    nlohmann::json request_headers_json(request_headers);
+    std::cout << "Request headers: " << request_headers_json.dump() << "\n";
+    
+    NetworkLog network_log = NetworkLog(
         request.getMethod(),
         request.getURI(),
-        incomingBody,
-        headers,
-        200
+        request_body,
+        request_headers,
+        100
     );
 
-    Object jsonObj;
-    jsonObj.set("event", "http_request");
-    jsonObj.set("uri", request.getURI());
-    jsonObj.set("body", incomingBody);
-
-    std::stringstream jsonStream;
-    jsonObj.stringify(jsonStream);
-    std::string jsonMessage = jsonStream.str();
-
-    WebSocketManager::getInstance().broadcastMessage(networkTraffic.toJson());
-
-    // Send HTTP response
-    response.setStatus(HTTPResponse::HTTP_OK);
-    response.setContentType("application/json");
-    response.send() << "{ \"status\": \"received\" }";
-
-    std::string processed_text = "";
-    try
-    {
-        processed_text = getProcessedText(incomingBody, response);
-    }
-    catch (Exception &ex)
-    {
-        std::cerr << "Error calling OpenAI API: " << ex.displayText() << std::endl;
-        response.setStatus(HTTPResponse::HTTP_INTERNAL_SERVER_ERROR);
-        response.send() << "Error processing request with OpenAI API.";
-        return;
-    }
+    WebSocketManager::getInstance().broadcastMessage(network_log.toJson());
 
     try
     {
-        std::string base_api_response = forwardRequest(processed_text);
-        response.setStatus(HTTPResponse::HTTP_OK);
-        response.send() << base_api_response;
+        HTTPClientSession base_session(BASE_API_HOST, 8000);
+        std::ostream &baseOs = base_session.sendRequest(request);
+        HTTPResponse network_response;
+        std::istream &baseIs = base_session.receiveResponse(network_response);
+
+        std::unordered_map<std::string, std::string> response_headers = getHeaders(network_response);
+    
+        std::stringstream baseResponseStream;
+        Poco::StreamCopier::copyStream(baseIs, baseResponseStream);
+        std::string network_response_body = baseResponseStream.str();
+
+        NetworkLog network_response_log = NetworkLog(
+            request.getMethod(),
+            request.getURI(),
+            network_response_body,
+            response_headers,
+            network_response.getStatus()
+        );
+
+        std::cout << "network response log: " << network_response_log.toJson() << "\n";
+
+        WebSocketManager::getInstance().broadcastMessage(network_response_log.toJson());
+
+        response.setStatus(network_response.getStatus());
+        response.send() << network_response_body;
     }
+
     catch (Exception &ex)
     {
-        std::cerr << "Error forwarding to base API: " << ex.displayText() << std::endl;
+        std::cerr << "Error forwarding to base API: " << ex.displayText() << "\n";
         response.setStatus(HTTPResponse::HTTP_INTERNAL_SERVER_ERROR);
         response.send() << "Error forwarding processed request to base API.";
         return;

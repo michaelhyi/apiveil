@@ -4,7 +4,13 @@ const logsElement = document.getElementById("logs");
 
 ws.onmessage = (e) => {
     const log = JSON.parse(e.data);
-    log.body = JSON.parse(log.body);
+
+    try {
+        log.body = JSON.parse(log.body);
+    } catch (e) {
+        log.body = log.body;
+    }
+
     log.headers = JSON.parse(log.headers);
 
     const innerHtml = getNetworkTrafficLogHtml(log);
@@ -16,8 +22,9 @@ function getNetworkTrafficLogHtml(log) {
     const caretHtml = "<p>&rsaquo;</p>";
     const timestampHtml = "<p>" + convertUnixToFormattedDate(log.timestamp) + "</p>";
     const requestHtml = "<p>" + log.method + " " + log.path + "</p>";
+    const statusCodeHtml = "<p>" + log.status_code + "</p>";
 
-    return "<div class='network-traffic'>" + caretHtml + timestampHtml + requestHtml + "</div>";
+    return "<div class='network-traffic'>" + caretHtml + timestampHtml + requestHtml + statusCodeHtml + "</div>";
 }
 
 function convertUnixToFormattedDate(timestamp) {

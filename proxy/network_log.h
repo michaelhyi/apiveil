@@ -2,7 +2,10 @@
 #include <ctime>
 #include <map>
 
-class NetworkTraffic {
+#ifndef NETWORK_LOG_H
+#define NETWORK_LOG_H
+
+class NetworkLog {
 private:
     std::string network_traffic_id;
     std::string method;
@@ -13,8 +16,8 @@ private:
     int status_code;
 
 public:
-    NetworkTraffic(std::string network_traffic_id, std::string method, std::string path, time_t timestamp, std::string body, std::unordered_map<std::string, std::string> headers, int status_code);
-    NetworkTraffic(std::string method, std::string path, std::string body, std::unordered_map<std::string, std::string> headers, int status_code);
+    NetworkLog(std::string network_traffic_id, std::string method, std::string path, time_t timestamp, std::string body, std::unordered_map<std::string, std::string> headers, int status_code);
+    NetworkLog(std::string method, std::string path, std::string body, std::unordered_map<std::string, std::string> headers, int status_code);
 
     std::string getNetworkTrafficId();
     std::string getMethod();
@@ -34,5 +37,7 @@ public:
 
     std::string toString();
     std::string toJson();
-    static NetworkTraffic fromJson(std::string json);
+    static NetworkLog fromJson(std::string json);
 };
+
+#endif
