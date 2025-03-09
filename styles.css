@@ -1,0 +1,52 @@
+* {
+    background-color: black;
+    color: white;
+    font-family: "Inter", sans-serif;
+    margin: 0;
+}
+
+.container {
+    margin: 48px auto;
+    width: 90%;
+}
+
+.back-link {
+    cursor: pointer;
+    color: #939393;
+    font-size: 12px;
+}
+
+.proxy-name {
+    margin-top: 12px;
+    margin-bottom: 20px;
+}
+
+.metadata {
+    margin-top: 8px;
+    font-size: 13px;
+    display: flex;
+    gap: 64px;
+}
+
+.metadata-key {
+    font-weight: 500;
+}
+
+.metadata-value {
+    color: #A5A2A2;
+}
+
+.logs {
+    margin-top: 72px;
+    border: 1px solid #A2A5A5;
+    border-radius: 15px;
+    height: 512px;
+}
+
+.network-traffic {
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+    margin-top: 16px;
+    margin-left: 24px;
+}
