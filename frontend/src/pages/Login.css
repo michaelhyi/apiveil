@@ -1,0 +1,101 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    font-family: sans-serif;
+    color: #fff;
+}
+
+.loginPageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.apiveilTitle {
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+
+.inputLabel {
+    align-self: flex-start;
+    color: white;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.inputField {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.forgotPasswordLink {
+    align-self: flex-start;
+    margin-bottom: 1rem;
+    color: #aaa;
+    text-decoration: underline;
+    font-size: 0.7rem;
+}
+
+.loginButton {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #fff;
+    color: #000;
+}
+
+.socialLoginButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 1rem;
+}
+
+.googleLoginButton {
+    background-color: #333;
+    color: #fff;
+}
+
+.githubLoginButton {
+    background-color: #333;
+    color: #fff;
+}
+
+.socialLogo {
+    width: 20px;
+    height: 20px;
+}
+
+.signupText {
+    text-align: center;
+    font-size: 0.7rem;
+}
+
+.signupLink {
+    color: #fff;
+    text-decoration: underline;
+}
