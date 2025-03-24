@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>APIVeil Login</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <div class="loginPageContainer">
+    <h1 class="apiveilTitle">APIVeil</h1>
+
+    <form class="loginForm">
+      <label class="inputLabel">Email</label>
+      <input type="email" class="inputField" />
+
+      <label class="inputLabel">Password</label>
+      <input type="password" class="inputField" />
+
+      <a href="#" class="forgotPasswordLink">Forgot Password?</a>
+
+      <button type="submit" class="loginButton">Login</button>
+
+      <button type="button" class="socialLoginButton googleLoginButton">
+        <img src="google-logo.png" alt="Google Logo" class="socialLogo" />
+        Login with Google
+      </button>
+
+      <button type="button" class="socialLoginButton githubLoginButton">
+        <img src="github-logo.png" alt="GitHub Logo" class="socialLogo" />
+        Login with GitHub
+      </button>
+
+      <div class="signupText">
+        Don’t have an account? <a href="#" class="signupLink">Register</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
