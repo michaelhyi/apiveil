@@ -30,7 +30,7 @@ const Login = () => {
         </button>
 
         <div className="signupText">
-          Don’t have an account? <a href="#" className="signupLink">Register</a>
+          Don’t have an account? <span> </span><a href="#" className="signupLink">Register</a>
         </div>
       </form>
     </div>
