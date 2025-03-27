@@ -3,7 +3,7 @@
 #include <Poco/JSON/Object.h>
 #include <Poco/JSON/Parser.h>
 #include <Poco/Net/HTTPServerRequest.h>
-#include <Poco/Net/HTTPClientSession.h>
+#include <Poco/Net/HTTPSClientSession.h>
 
 #include "include/nlohmann/json.hpp"
 #include "network_log.h"
@@ -15,7 +15,7 @@
 using namespace Poco::JSON;
 using namespace Poco;
 
-const std::string BASE_API_HOST = "127.0.0.1";
+const std::string BASE_API_HOST = "api.openweathermap.org";
 
 void ProxyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse &response)
 {
@@ -40,10 +40,10 @@ void ProxyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRe
 
     try
     {
-        HTTPClientSession base_session(BASE_API_HOST, 8000);
-        std::ostream &baseOs = base_session.sendRequest(request);
+        HTTPSClientSession session(BASE_API_HOST, 443);
+        std::ostream &baseOs = session.sendRequest(request);
         HTTPResponse network_response;
-        std::istream &baseIs = base_session.receiveResponse(network_response);
+        std::istream &baseIs = session.receiveResponse(network_response);
 
         std::unordered_map<std::string, std::string> response_headers = getHeaders(network_response);
     
