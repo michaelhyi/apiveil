@@ -1,32 +1,54 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './styles.css';
+import "./styles.css";
 import googleLogo from "./google-logo.png";
 import githubLogo from "./github-logo.png";
+import { 
+  signInWithEmailAndPassword, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  GithubAuthProvider 
+} from "firebase/auth";
+import { auth } from "./firebase";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  // Handler for email/password login
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (res.ok) {
-        navigate("/dashboard");
-      } else {
-        alert("Login failed! Please check your credentials.");
-      }
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);
+      alert("Login failed: " + error.message);
+    }
+  };
+
+  // Handler for Google login
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error logging in with Google:", error);
+      alert("Google Login failed: " + error.message);
+    }
+  };
+
+  // Handler for GitHub login
+  const handleGithubLogin = async () => {
+    const provider = new GithubAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error logging in with GitHub:", error);
+      alert("GitHub Login failed: " + error.message);
     }
   };
 
@@ -34,7 +56,6 @@ const Login = () => {
     <div className="auth-container">
       <h1>APIVeil</h1>
       <h2>Login To Your Account</h2>
-
       <form className="auth-form" onSubmit={handleLogin}>
         <label htmlFor="email">Email</label>
         <input
@@ -72,11 +93,20 @@ const Login = () => {
           <span>OR</span>
         </div>
 
-        <button type="button" className="btn-social google-login">
+        <button 
+          type="button" 
+          className="btn-social google-login" 
+          onClick={handleGoogleLogin}
+        >
           <img src={googleLogo} alt="Google" />
           Login with Google
         </button>
-        <button type="button" className="btn-social github-login">
+
+        <button 
+          type="button" 
+          className="btn-social github-login"
+          onClick={handleGithubLogin}
+        >
           <img src={githubLogo} alt="GitHub" />
           Login with GitHub
         </button>

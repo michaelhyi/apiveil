@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import "./styles.css";
 import googleLogo from "./google-logo.png";
 import githubLogo from "./github-logo.png";
-import "./styles.css";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebase";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -12,9 +14,11 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      await createUserWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
     } catch (error) {
-      console.error(error);
+      console.error("Error during registration:", error);
+      alert("Registration failed: " + error.message);
     }
   };
 
@@ -22,7 +26,6 @@ const Register = () => {
     <div className="auth-container">
       <h1>APIVeil</h1>
       <h2>Create Your Account</h2>
-
       <form className="auth-form" onSubmit={handleRegister}>
         <label htmlFor="email">Email</label>
         <input
@@ -46,7 +49,9 @@ const Register = () => {
           required
         />
 
-        <button type="submit" className="btn-primary">Register</button>
+        <button type="submit" className="btn-primary">
+          Register
+        </button>
 
         <div className="or-separator">
           <span>OR</span>
