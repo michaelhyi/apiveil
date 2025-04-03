@@ -1,7 +1,7 @@
 #include <Poco/JSON/Object.h>
 
 #include "network_log.h"
-#include "../include/nlohmann/json.hpp"
+#include "include/nlohmann/json.hpp"
 
 using namespace Poco::JSON;
 
