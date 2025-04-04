@@ -1,6 +1,6 @@
 import re
 
-def UnauthorizedError(Exception):
+class UnauthorizedError(Exception):
     pass
 
 def valid_string(str: str) -> bool:

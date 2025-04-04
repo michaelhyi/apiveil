@@ -5,14 +5,14 @@ from api.util import valid_string
 
 class ProxyService():
     @staticmethod
-    def get_all_proxies_by_user_id(user_id: int) -> list[dict]:
+    def get_all_proxies_by_user_id(user_id: int) -> list[Proxy]:
         if not user_id:
-            raise ValueError("invalid proxy id")
+            raise ValueError("invalid user id")
 
         if not UserDao.get_user_by_id(user_id):
             raise ValueError("user not found")
 
-        return [proxy.to_dict() for proxy in ProxyDao.get_all_proxies_by_user_id(user_id)]
+        return ProxyDao.get_all_proxies_by_user_id(user_id)
 
     @staticmethod
     def create_proxy(

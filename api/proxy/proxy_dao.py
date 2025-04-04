@@ -9,6 +9,17 @@ connection = psycopg2.connect(
 
 class ProxyDao():
     @staticmethod
+    def get_proxy_by_id(proxy_id: int) -> Proxy | None:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM public.proxy WHERE proxy_id = %s", (proxy_id,))
+            result_set = cursor.fetchone()
+
+            if result_set is None:
+                return None
+
+            return Proxy(*result_set)
+
+    @staticmethod
     def get_all_proxies_by_user_id(user_id: int) -> list[Proxy]:
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM public.proxy WHERE user_id = %s", (user_id,))

@@ -14,7 +14,8 @@ def get_all_proxies_by_user_id(user_id: int):
         raise UnauthorizedError('unauthorized access to this resource')
 
     proxies = ProxyService.get_all_proxies_by_user_id(user_id)
-    return { 'proxies': proxies }, 200
+    proxies_json = [proxy.to_dict() for proxy in proxies]
+    return { 'proxies': proxies_json }, 200
 
 @proxy_bp.route('/', methods=['POST'])
 def create_proxy():

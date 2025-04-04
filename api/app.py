@@ -1,12 +1,14 @@
 from flask import Flask
 from api.auth.auth_controller import auth_bp
 from api.proxy.proxy_controller import proxy_bp
+from api.proxy_log.proxy_log_controller import proxy_log_bp
 from api.util import UnauthorizedError
 
 app = Flask(__name__)
 
 app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
-app.register_blueprint(proxy_bp, url_prefix='/api/v1/proxy')
+app.register_blueprint(proxy_bp, url_prefix='/api/v1/proxies')
+app.register_blueprint(proxy_log_bp, url_prefix='/api/v1/proxies')
 
 @app.errorhandler(Exception)
 def handle_error(e):
