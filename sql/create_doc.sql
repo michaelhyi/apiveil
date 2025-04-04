@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS documentation (
+CREATE TABLE IF NOT EXISTS public.documentation (
     doc_id          SERIAL PRIMARY KEY,
     proxy_id        INT NOT NULL,
     title           VARCHAR(255),
@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS documentation (
     file_size       BIGINT,                  -- We could also additionally have the size of the file in bytes saved too
     version         VARCHAR(50),
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
     CONSTRAINT fk_doc_proxy
         FOREIGN KEY (proxy_id) REFERENCES proxy(proxy_id)

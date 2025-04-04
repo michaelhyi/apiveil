@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS proxy_log (
+CREATE TABLE IF NOT EXISTS public.proxy_log (
     proxy_log_id    SERIAL PRIMARY KEY,
     proxy_id        INT NOT NULL,
     timestamp       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

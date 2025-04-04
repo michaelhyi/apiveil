@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS proxy (
+CREATE TABLE IF NOT EXISTS public.proxy (
     proxy_id       SERIAL PRIMARY KEY,
     user_id        INT NOT NULL,
     name           VARCHAR(100) NOT NULL,
@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS proxy (
     ip_address     VARCHAR(50),              -- optional
     server_id      VARCHAR(50),          -- optional
     created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_proxy_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id)
+        FOREIGN KEY (user_id) REFERENCES "user"(user_id)
         ON DELETE CASCADE
 );
