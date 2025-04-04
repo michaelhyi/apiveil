@@ -1,7 +1,19 @@
+from api.proxy.proxy import Proxy
 from api.proxy.proxy_dao import ProxyDao
+from api.user.user_dao import UserDao
 from api.util import valid_string
 
 class ProxyService():
+    @staticmethod
+    def get_all_proxies_by_user_id(user_id: int) -> list[dict]:
+        if not user_id:
+            raise ValueError("invalid proxy id")
+
+        if not UserDao.get_user_by_id(user_id):
+            raise ValueError("user not found")
+
+        return [proxy.to_dict() for proxy in ProxyDao.get_all_proxies_by_user_id(user_id)]
+
     @staticmethod
     def create_proxy(
         user_id: int,
@@ -38,6 +50,7 @@ class ProxyService():
             pricing_plan,
             api_protocol,
             api_base_url,
+            '',
             '',
             ''
         )

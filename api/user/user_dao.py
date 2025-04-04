@@ -9,6 +9,17 @@ connection = psycopg2.connect(
 
 class UserDao():
     @staticmethod
+    def get_user_by_id(user_id: int) -> User | None:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM public.user WHERE user_id = %s", (user_id,))
+            result_user = cursor.fetchone()
+
+            if result_user is None:
+                return None
+
+            return User(*result_user)
+
+    @staticmethod
     def get_user_by_email(email: str) -> User | None:
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM public.user WHERE email = %s", (email,))
