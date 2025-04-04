@@ -12,5 +12,5 @@ class JwtService():
         )
 
     @staticmethod
-    def validate_token(token):
+    def decode_token(token):
         return jwt.decode(token, "secret", algorithms=["HS256"])

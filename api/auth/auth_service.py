@@ -43,7 +43,7 @@ class AuthService():
             raise ValueError("invalid token")
 
         try:
-            JwtService.validate_token(token)
+            JwtService.decode_token(token)
             return True
         except Exception as e:
             raise UnauthorizedError("invalid token")
