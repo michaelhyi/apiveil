@@ -1,4 +1,5 @@
 import psycopg2
+from api.user.user import User
 
 connection = psycopg2.connect(
     host="localhost",
@@ -8,10 +9,15 @@ connection = psycopg2.connect(
 
 class UserDao():
     @staticmethod
-    def get_user_by_email(email: str):
+    def get_user_by_email(email: str) -> User | None:
         with connection.cursor() as cursor:
             cursor.execute("SELECT * FROM public.user WHERE email = %s", (email,))
-            return cursor.fetchone()
+            result_user = cursor.fetchone()
+
+            if result_user is None:
+                return None
+
+            return User(*result_user)
 
     @staticmethod
     def create_user(name: str, email: str, password: str, provider: str):

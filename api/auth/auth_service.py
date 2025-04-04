@@ -15,10 +15,10 @@ class AuthService():
         if user is None:
             raise ValueError("user not found")
 
-        if not HashService.compare(password, user[3]): # user[3] is the password
+        if not HashService.compare(password, user.password):
             raise ValueError("password is incorrect")
 
-        return user[0], JwtService.generate_token(user[0]) # user[0] is the user_id
+        return user.user_id, JwtService.generate_token(user.user_id)
 
     @staticmethod
     def register(name: str, email: str, password: str) -> tuple[str, str]:
