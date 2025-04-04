@@ -5,17 +5,23 @@ const logsElement = document.getElementById("logs");
 
 ws.onmessage = (e) => {
     const log = JSON.parse(e.data);
+    console.log(log);
 
     try {
-        log.body = JSON.parse(log.body);
+        log.request_body = JSON.parse(log.request_body);
     } catch (e) {
-        log.body = log.body;
+        log.request_body = log.request_body;
     }
 
-    log.headers = JSON.parse(log.headers);
-    log.id = logs.length;
+    try {
+        log.response_body = JSON.parse(log.response_body);
+    } catch (e) {
+        log.response_body = log.response_body;
+    }
 
-    console.log(log);
+    log.request_headers = JSON.parse(log.request_headers);
+    log.response_headers = JSON.parse(log.response_headers);
+    log.id = logs.length;
 
     logs.push(log);
     const innerHtml = getNetworkTrafficLogHtml(log);

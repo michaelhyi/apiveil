@@ -6,7 +6,8 @@
 #include <Poco/Net/HTTPSClientSession.h>
 
 #include "include/nlohmann/json.hpp"
-#include "network_log.h"
+#include "proxy_log_dao.h"
+#include "proxy_log.h"
 #include "proxy_request_handler.h"
 #include "proxy_request_handler_util.h"
 #include "openai_service.h"
@@ -28,16 +29,6 @@ void ProxyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRe
     nlohmann::json request_headers_json(request_headers);
     std::cout << "Request headers: " << request_headers_json.dump() << "\n";
     
-    NetworkLog network_log = NetworkLog(
-        request.getMethod(),
-        request.getURI(),
-        request_body,
-        request_headers,
-        100
-    );
-
-    WebSocketManager::getInstance().broadcastMessage(network_log.toJson());
-
     try
     {
         HTTPSClientSession session(BASE_API_HOST, 443);
@@ -46,22 +37,28 @@ void ProxyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRe
         std::istream &baseIs = session.receiveResponse(network_response);
 
         std::unordered_map<std::string, std::string> response_headers = getHeaders(network_response);
+        nlohmann::json response_headers_json(response_headers);
     
         std::stringstream baseResponseStream;
         Poco::StreamCopier::copyStream(baseIs, baseResponseStream);
         std::string network_response_body = baseResponseStream.str();
 
-        NetworkLog network_response_log = NetworkLog(
+        ProxyLog network_log = ProxyLog(
+            5, // TODO: Replace with actual proxy ID
             request.getMethod(),
             request.getURI(),
-            network_response_body,
-            response_headers,
-            network_response.getStatus()
+            network_response.getStatus(),
+            request_headers_json.dump(),
+            response_headers_json.dump(),
+            request_body,
+            network_response_body
         );
 
-        std::cout << "network response log: " << network_response_log.toJson() << "\n";
+        ProxyLogDao::createProxyLog(&network_log);
 
-        WebSocketManager::getInstance().broadcastMessage(network_response_log.toJson());
+        std::cout << "network log: " << network_log.toJson() << "\n";
+
+        WebSocketManager::getInstance().broadcastMessage(network_log.toJson());
 
         response.setStatus(network_response.getStatus());
         response.send() << network_response_body;
