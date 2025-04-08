@@ -1,7 +1,7 @@
 import React from "react";
-import "./create_proxy_form.css";
+import "./create-proxy.css";
 
-const CreateProxyForm = () => {
+const CreateProxy = () => {
   return (
     <div className="createProxyContainer">
       <h1 className="createProxyTitle">Create New Proxy</h1>
@@ -66,4 +66,4 @@ const CreateProxyForm = () => {
   );
 };
 
-export default CreateProxyForm;
+export default CreateProxy;

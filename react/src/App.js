@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import CreateProxyForm from "./components/create_proxy_form";
-import IndexPage from "./components/index";
+import CreateProxy from "./pages/CreateProxy";
+import ViewProxy from "./pages/ViewProxy";
 
 function App() {
   return (
@@ -13,8 +13,8 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/create_proxy_form" element={<CreateProxyForm />} />
-        <Route path="/proxy/:proxyId" element={<IndexPage />} />
+        <Route path="/proxy/create" element={<CreateProxy />} />
+        <Route path="/proxy/:proxyId" element={<ViewProxy />} />
       </Routes>
     </Router>
   );

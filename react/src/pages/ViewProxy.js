@@ -2,7 +2,7 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import "./styles.css";
 
-const IndexPage = () => {
+const ViewProxy = () => {
   const { proxyId } = useParams();
 
   return (
@@ -48,4 +48,4 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default ViewProxy;
