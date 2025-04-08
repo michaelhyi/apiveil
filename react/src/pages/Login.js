@@ -1,15 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles.css";
-import googleLogo from "./google-logo.png";
-import githubLogo from "./github-logo.png";
-import { 
-  signInWithEmailAndPassword, 
-  signInWithPopup, 
-  GoogleAuthProvider, 
-  GithubAuthProvider 
-} from "firebase/auth";
-import { auth } from "./firebase";
+import googleLogo from "../assets/google-logo.png";
+import githubLogo from "../assets/github-logo.png";
+import AuthHttpClient from "../http/AuthHttpClient";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +13,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      AuthHttpClient.login(email, password);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);
@@ -30,9 +23,9 @@ const Login = () => {
 
   // Handler for Google login
   const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
+    // const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+    //   await signInWithPopup(auth, provider);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in with Google:", error);
@@ -42,9 +35,9 @@ const Login = () => {
 
   // Handler for GitHub login
   const handleGithubLogin = async () => {
-    const provider = new GithubAuthProvider();
+    // const provider = new GithubAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+    //   await signInWithPopup(auth, provider);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in with GitHub:", error);

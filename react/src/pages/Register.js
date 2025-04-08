@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import "./styles.css";
-import googleLogo from "./google-logo.png";
-import githubLogo from "./github-logo.png";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
+import googleLogo from "../assets/google-logo.png";
+import githubLogo from "../assets/github-logo.png";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +11,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+    //   await createUserWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error during registration:", error);
