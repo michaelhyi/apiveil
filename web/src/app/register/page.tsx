@@ -3,10 +3,11 @@ import Input from "@/components/Input";
 import OAuthButton from "@/components/OAuthButton";
 import Link from "next/link";
 
-export default function Login() {
+export default function Register() {
   return (
     <AuthContainer>
-      <Input id="email" label="Email" type="text" required />
+      <Input id="name" label="Name" type="text" required />
+      <Input id="email" label="Email" type="text" required className="mt-2" />
       <Input
         id="password"
         label="Password"
@@ -14,12 +15,16 @@ export default function Login() {
         required
         className="mt-2"
       />
-      <Link href="#" className="text-[#9D9D9D] text-xs underline mt-8">
-        Forgot Password?
-      </Link>
+      <Input
+        id="confirm-password"
+        label="Confirm Password"
+        type="password"
+        required
+        className="mt-2"
+      />
 
-      <button type="submit" className="bg-white text-black py-3 mt-3 text-sm">
-        Login
+      <button type="submit" className="bg-white text-black py-3 mt-8 text-sm">
+        Register
       </button>
 
       <OAuthButton
@@ -34,9 +39,9 @@ export default function Login() {
       />
 
       <p className="text-xs text-[#9D9D9D] text-center mt-4">
-        Don&apos;t have an account?&nbsp;
-        <Link href="/register" className="underline">
-          Register
+        Already have an account?&nbsp;
+        <Link href="/" className="underline">
+          Login
         </Link>
       </p>
     </AuthContainer>
