@@ -35,16 +35,16 @@ void ProxyLog::setResponseBody(std::string response_body) { this->response_body 
 
 std::string ProxyLog::toJson()
 {
-    nlohmann::json json_obj = {
-        {"proxy_log_id", proxy_log_id},
-        {"proxy_id", proxy_id},
+    nlohmann::json jsonObj = {
+        {"proxyLogId", proxy_log_id},
+        {"proxyId", proxy_id},
         {"timestamp", timestamp},
         {"method", method},
         {"path", path},
-        {"status_code", status_code},
-        {"request_headers", request_headers},
-        {"response_headers", response_headers},
-        {"request_body", request_body},
-        {"response_body", response_body}};
-    return json_obj.dump();
+        {"statusCode", status_code},
+        {"requestHeaders", request_headers},
+        {"responseHeaders", response_headers},
+        {"requestBody", request_body},
+        {"responseBody", response_body}};
+    return jsonObj.dump();
 }

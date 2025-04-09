@@ -30,9 +30,50 @@ export default function ProxyPage({ params }: { params: { proxyId: string } }) {
                 const { proxyId } = await params;
                 const { proxy: proxyWithLogs } =
                     await ProxyHttpClient.getProxyWithLogsByProxyId(proxyId);
+
                 setData(proxyWithLogs);
-                console.log(proxyWithLogs);
-            } catch {
+
+                const ws = new WebSocket("http://localhost:4000/ws");
+
+                ws.onmessage = (e) => {
+                    const log = JSON.parse(e.data);
+
+                    try {
+                        log.requestBody = JSON.parse(log.requestBody);
+                    } catch {
+                        log.requestBody = log.requestBody;
+                    }
+
+                    try {
+                        log.responseBody = JSON.parse(log.responseBody);
+                    } catch {
+                        log.responseBody = log.responseBody;
+                    }
+
+                    log.requestHeaders = JSON.parse(log.requestHeaders);
+                    log.responseHeaders = JSON.parse(log.responseHeaders);
+                    console.log(log);
+
+                    setData((prevData) => {
+                        if (prevData) {
+                            return {
+                                ...prevData,
+                                logs: [...prevData.logs, log],
+                            };
+                        }
+                        return prevData;
+                    });
+                };
+
+                ws.onerror = (err) => {
+                    console.error("WebSocket error:", err);
+                };
+
+                return () => {
+                    ws.close();
+                };
+            } catch (error) {
+                console.error("Error fetching proxy data:", error);
             } finally {
                 setLoading(false);
             }
