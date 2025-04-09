@@ -1,5 +1,7 @@
 from api.proxy.proxy import Proxy
 from api.proxy.proxy_dao import ProxyDao
+from api.proxy.proxy_with_logs import ProxyWithLogs
+from api.proxy_log.proxy_log_dao import ProxyLogDao
 from api.user.user_dao import UserDao
 from api.util import valid_string
 
@@ -13,6 +15,20 @@ class ProxyService():
             raise ValueError("user not found")
 
         return ProxyDao.get_all_proxies_by_user_id(user_id)
+
+    @staticmethod
+    def get_proxy_with_logs_by_proxy_id(proxy_id: int) -> ProxyWithLogs:
+        if not proxy_id:
+            raise ValueError("invalid proxy id")
+
+        proxy = ProxyDao.get_proxy_by_id(proxy_id)
+        if not proxy:
+            raise ValueError("proxy not found")
+
+        logs = ProxyLogDao.get_all_proxy_logs_by_proxy_id(proxy_id)
+
+        proxy_with_logs = ProxyWithLogs(proxy, logs)
+        return proxy_with_logs
 
     @staticmethod
     def create_proxy(

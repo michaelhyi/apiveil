@@ -25,16 +25,16 @@ class ProxyLog:
         self.request_body = request_body
         self.response_body = response_body
 
-        def to_dict(self) -> dict:
-            return {
-                "proxyLogId": self.proxy_log_id,
-                "proxyId": self.proxy_id,
-                "timestamp": self.timestamp.isoformat() if self.timestamp else None,
-                "method": self.method,
-                "path": self.path,
-                "statusCode": self.status_code,
-                "requestHeaders": self.request_headers,
-                "responseHeaders": self.response_headers,
-                "requestBody": self.request_body,
-                "responseBody": self.response_body,
-            }
+    def to_dict(self) -> dict:
+        return {
+            "proxyLogId": self.proxy_log_id,
+            "proxyId": self.proxy_id,
+            "timestamp": self.timestamp.isoformat() if self.timestamp else None,
+            "method": self.method,
+            "path": self.path,
+            "statusCode": self.status_code,
+            "requestHeaders": self.request_headers,
+            "responseHeaders": self.response_headers,
+            "requestBody": self.request_body,
+            "responseBody": self.response_body,
+        }
