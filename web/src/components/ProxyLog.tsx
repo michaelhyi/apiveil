@@ -1,3 +1,4 @@
+import ProxyLogHttpClient from "@/http/ProxyLogHttpClient";
 import { ProxyLog as ProxyLogType } from "@/types/ProxyLog";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
@@ -25,6 +26,7 @@ export default function ProxyLog({
     setExpanded: Dispatch<SetStateAction<number>>;
 }) {
     const [selected, setSelected] = useState(0);
+    const [analysis, setAnalysis] = useState<string | null>(null);
 
     const handleClick = useCallback(() => {
         if (expanded === log.proxyLogId) {
@@ -33,6 +35,13 @@ export default function ProxyLog({
             setExpanded(log.proxyLogId);
         }
     }, [log.proxyLogId, expanded, setExpanded]);
+
+    const handleAnalyzeClick = useCallback(async () => {
+        const { analysis } = await ProxyLogHttpClient.analyzeProxyLog(
+            log.proxyLogId.toString(),
+        );
+        setAnalysis(analysis);
+    }, [log, setAnalysis]);
 
     return (
         <div className="flex flex-col mt-4 ml-6">
@@ -100,30 +109,41 @@ export default function ProxyLog({
                             Response Headers
                         </p>
                     </div>
-                    <pre className="bg-[#212121] text-white w-1/3 text-sm p-4 rounded-lg overflow-auto whitespace-pre-wrap break-words mt-4 ml-10">
-                        {(() => {
-                            const raw =
-                                selected === 0
-                                    ? log.requestBody
-                                    : selected === 1
-                                      ? log.requestHeaders
-                                      : selected === 2
-                                        ? log.responseBody
-                                        : selected === 3
-                                          ? log.responseHeaders
-                                          : null;
+                    <div className="flex gap-12 items-start">
+                        <pre className="bg-[#212121] text-white w-1/3 text-sm p-4 rounded-lg overflow-auto whitespace-pre-wrap break-words mt-4 ml-10">
+                            {(() => {
+                                const raw =
+                                    selected === 0
+                                        ? log.requestBody
+                                        : selected === 1
+                                          ? log.requestHeaders
+                                          : selected === 2
+                                            ? log.responseBody
+                                            : selected === 3
+                                              ? log.responseHeaders
+                                              : null;
 
-                            try {
-                                const parsed =
-                                    typeof raw === "string"
-                                        ? JSON.parse(raw)
-                                        : raw;
-                                return JSON.stringify(parsed, null, 2);
-                            } catch {
-                                return raw ?? "N/A"; // fallback for non-JSON or null
-                            }
-                        })()}
-                    </pre>
+                                try {
+                                    const parsed =
+                                        typeof raw === "string"
+                                            ? JSON.parse(raw)
+                                            : raw;
+                                    return JSON.stringify(parsed, null, 2);
+                                } catch {
+                                    return raw ?? "N/A"; // fallback for non-JSON or null
+                                }
+                            })()}
+                        </pre>
+                        <div className="w-1/3">
+                            <button
+                                onClick={handleAnalyzeClick}
+                                className="h-12 border-1 rounded-md px-2 text-sm cursor-pointer"
+                            >
+                                Analyze with AI
+                            </button>
+                            <p className="mt-4">{analysis}</p>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
