@@ -1,11 +1,11 @@
 "use client";
 
 import Loading from "@/components/Loading";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import ProxyTableRow from "@/components/ProxyTableRow";
+import ProtectedRoute from "@/components/Auth/ProtectedRoute";
+import ProxyTableRow from "@/components/Dashboard/ProxyTableRow";
 import { useUser } from "@/context/UserContext";
 import ProxyHttpClient from "@/http/ProxyHttpClient";
-import Proxy from "@/types/Proxy";
+import { Proxy } from "@/utils/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";

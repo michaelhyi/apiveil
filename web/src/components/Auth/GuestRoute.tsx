@@ -1,16 +1,18 @@
+"use client";
+
 import AuthHttpClient from "@/http/AuthHttpClient";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Loading from "./Loading";
+import Loading from "../Loading";
 import { useUser } from "@/context/UserContext";
 
-export default function ProtectedRoute({
+export default function GuestRoute({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const router = useRouter();
     const { setUserId } = useUser();
+    const router = useRouter();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -18,10 +20,10 @@ export default function ProtectedRoute({
             try {
                 const { user } = await AuthHttpClient.getMe();
                 setUserId(user.userId);
-                setLoading(false);
+                router.push("/dashboard");
             } catch {
                 setUserId(null);
-                router.push("/");
+                setLoading(false);
             }
         })();
     }, [router, setUserId, setLoading]);

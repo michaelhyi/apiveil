@@ -1,13 +1,13 @@
 "use client";
 
-import AuthContainer from "@/components/AuthContainer";
-import Input from "@/components/Input";
-import OAuthButton from "@/components/OAuthButton";
+import AuthContainer from "@/components/Auth/AuthContainer";
+import Input from "@/components/Forms/Input";
+import OAuthButton from "@/components/Auth/OAuthButton";
 import AuthHttpClient from "@/http/AuthHttpClient";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
-import GuestRoute from "../../components/GuestRoute";
+import GuestRoute from "@/components/Auth/GuestRoute";
 import { useUser } from "@/context/UserContext";
 
 export default function Register() {
