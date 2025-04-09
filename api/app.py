@@ -6,7 +6,7 @@ from api.proxy_log.proxy_log_controller import proxy_log_bp
 from api.util import UnauthorizedError
 
 app = Flask(__name__)
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 
 app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
 app.register_blueprint(proxy_bp, url_prefix='/api/v1/proxies')

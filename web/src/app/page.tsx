@@ -1,44 +1,82 @@
+"use client";
+
 import AuthContainer from "@/components/AuthContainer";
 import Input from "@/components/Input";
 import OAuthButton from "@/components/OAuthButton";
+import AuthHttpClient from "@/http/AuthHttpClient";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
+import GuestRoute from "../components/GuestRoute";
 
-export default function Login() {
-  return (
-    <AuthContainer>
-      <Input id="email" label="Email" type="text" required />
-      <Input
-        id="password"
-        label="Password"
-        type="password"
-        required
-        className="mt-2"
-      />
-      <Link href="#" className="text-[#9D9D9D] text-xs underline mt-8">
-        Forgot Password?
-      </Link>
+export default function LoginPage() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const router = useRouter();
 
-      <button type="submit" className="bg-white text-black py-3 mt-3 text-sm">
-        Login
-      </button>
+    const handleSubmit = useCallback(
+        async (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
 
-      <OAuthButton
-        src="/assets/google-icon.svg"
-        alt="google-icon"
-        provider="Google"
-      />
-      <OAuthButton
-        src="/assets/github-icon.svg"
-        alt="github-icon"
-        provider="GitHub"
-      />
+            try {
+                await AuthHttpClient.login(email, password);
+                router.push("/dashboard");
+            } catch {
+            } finally {
+            }
+        },
+        [email, password, router],
+    );
 
-      <p className="text-xs text-[#9D9D9D] text-center mt-4">
-        Don&apos;t have an account?&nbsp;
-        <Link href="/register" className="underline">
-          Register
-        </Link>
-      </p>
-    </AuthContainer>
-  );
+    return (
+        <GuestRoute>
+            <AuthContainer onSubmit={handleSubmit}>
+                <Input
+                    id="email"
+                    label="Email"
+                    type="text"
+                    required
+                    value={email}
+                    onChange={setEmail}
+                />
+                <Input
+                    id="password"
+                    label="Password"
+                    type="password"
+                    required
+                    className="mt-2"
+                    value={password}
+                    onChange={setPassword}
+                />
+                <Link
+                    href="#"
+                    className="text-[#9D9D9D] text-xs underline mt-8"
+                >
+                    Forgot Password?
+                </Link>
+                <button
+                    type="submit"
+                    className="bg-white text-black py-3 mt-3 text-sm"
+                >
+                    Login
+                </button>
+                <OAuthButton
+                    src="/assets/google-icon.svg"
+                    alt="google-icon"
+                    provider="Google"
+                />
+                <OAuthButton
+                    src="/assets/github-icon.svg"
+                    alt="github-icon"
+                    provider="GitHub"
+                />
+                <p className="text-xs text-[#9D9D9D] text-center mt-4">
+                    Don&apos;t have an account?&nbsp;
+                    <Link href="/register" className="underline">
+                        Register
+                    </Link>
+                </p>
+            </AuthContainer>
+        </GuestRoute>
+    );
 }

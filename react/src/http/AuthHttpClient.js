@@ -6,6 +6,7 @@ export default class AuthHttpClient {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({ email, password })
         });
 
@@ -25,6 +26,7 @@ export default class AuthHttpClient {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({ email, password, confirmPassword })
         });
 
