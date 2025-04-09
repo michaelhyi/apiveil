@@ -1,4 +1,8 @@
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
+
 interface ProxyTableRowProps {
+    proxyId: number;
     name: string;
     status: string;
     cloudProvider: string;
@@ -10,6 +14,7 @@ interface ProxyTableRowProps {
 }
 
 export default function ProxyTableRow({
+    proxyId,
     name,
     status,
     cloudProvider,
@@ -19,8 +24,14 @@ export default function ProxyTableRow({
     baseApiUrl,
     apiProtocol,
 }: ProxyTableRowProps) {
+    const router = useRouter();
+
+    const handleClick = useCallback(() => {
+        router.push(`/proxy/${proxyId}`);
+    }, [proxyId, router]);
+
     return (
-        <tr>
+        <tr onClick={handleClick} className="cursor-pointer">
             <td className="px-8 py-6">{name}</td>
             <td className="px-8 py-6">
                 {status === "Running"

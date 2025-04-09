@@ -84,7 +84,8 @@ export default function Dashboard() {
                     <tbody>
                         {data.map((proxy) => (
                             <ProxyTableRow
-                                key={proxy.id}
+                                key={proxy.proxyId}
+                                proxyId={proxy.proxyId}
                                 name={proxy.name}
                                 status={proxy.status}
                                 cloudProvider={proxy.cloudProvider}

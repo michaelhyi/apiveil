@@ -1,5 +1,4 @@
 export default interface Proxy {
-    id: number;
     proxyId: number;
     userId: number;
     name: string;
