@@ -10,3 +10,4 @@ class OpenAiService:
         )
 
         return response.output_text
+    
