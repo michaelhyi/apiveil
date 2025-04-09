@@ -20,3 +20,13 @@ def get_all_proxy_logs_by_proxy_id(proxy_id: int):
     proxy_logs = ProxyLogService.get_all_proxy_logs_by_proxy_id(proxy_id)
     proxy_logs_json = [proxy.to_dict() for proxy in proxy_logs]
     return { 'proxyLogs': proxy_logs_json }, 200
+
+@proxy_log_bp.route('/<proxy_log_id>/analyze', methods=['POST'])
+def analyze_proxy_log(proxy_log_id: int):
+    token = request.cookies.get('auth_token')
+    jwt_payload = JwtService.decode_token(token)
+
+    # TODO: verify authorization
+
+    analysis = ProxyLogService.analyze_proxy_log(proxy_log_id)
+    return { 'analysis': analysis }, 201

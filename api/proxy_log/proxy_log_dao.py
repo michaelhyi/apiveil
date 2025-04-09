@@ -18,3 +18,17 @@ class ProxyLogDao():
                 return []
 
             return [ProxyLog(*result) for result in result_set]
+
+    @staticmethod
+    def get_proxy_log_by_id(proxy_log_id: int) -> ProxyLog:
+        if not proxy_log_id:
+            raise ValueError("invalid proxy log id")
+
+        with connection.cursor() as cursor: 
+            cursor.execute("SELECT * FROM public.proxy_log WHERE proxy_log_id = %s", (proxy_log_id,))
+            result_set = cursor.fetchone()
+
+            if not result_set:
+                raise None
+
+            return ProxyLog(*result_set)
