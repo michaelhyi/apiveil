@@ -22,7 +22,7 @@ def setup_rag_pipeline(model_name="gpt-4"):
     embeddings = OpenAIEmbeddings()
     try:
         vector_store = Chroma(
-            persist_directory="./data/chroma_db",
+            persist_directory=os.path.join(os.path.dirname(__file__), "data/chroma_db"),
             embedding_function=embeddings,
             collection_name="documents"
         )

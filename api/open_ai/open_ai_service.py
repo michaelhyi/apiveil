@@ -20,6 +20,6 @@ class OpenAiService:
             return response.output_text
 
 if __name__ == "__main__":
-    prompt = "Tell me a joke about cats"
+    prompt = "Show me the code for calling the vision API"
     result = OpenAiService.create_response(prompt)
     print(result)
