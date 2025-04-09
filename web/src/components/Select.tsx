@@ -27,6 +27,7 @@ export default function Select({
                 value={value}
                 onChange={(event) => onChange(event.target.value)}
             >
+                <option value="" disabled>Select an option</option>
                 {options.map((option) => (
                     <option key={option} value={option}>
                         {option}
