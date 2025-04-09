@@ -24,17 +24,17 @@ export default class ProxyHttpClient {
     static async createProxy({
         name,
         cloudProvider,
-        cloudRegion,
+        cloudProviderRegion,
         pricingPlan,
         apiProtocol,
-        apiBaseUrl,
+        baseApiUrl,
     }: {
         name: string;
         cloudProvider: string;
-        cloudRegion: string;
+        cloudProviderRegion: string;
         pricingPlan: string;
         apiProtocol: string;
-        apiBaseUrl: string;
+        baseApiUrl: string;
     }) {
         const response = await fetch("http://localhost:8080/api/v1/proxies", {
             method: "POST",
@@ -46,10 +46,10 @@ export default class ProxyHttpClient {
             body: JSON.stringify({
                 name,
                 cloudProvider,
-                cloudRegion,
+                cloudProviderRegion,
                 pricingPlan,
                 apiProtocol,
-                apiBaseUrl,
+                baseApiUrl,
             }),
         });
 

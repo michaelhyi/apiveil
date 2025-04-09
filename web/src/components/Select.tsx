@@ -1,33 +1,38 @@
 import { Dispatch, SetStateAction } from "react";
 import FormElement from "./FormElement";
 
-export default function Input({
+export default function Select({
     id,
     label,
-    type,
     required,
     className,
     value,
     onChange,
+    options,
 }: {
     id: string;
     label: string;
-    type: string;
     required: boolean;
     className?: string;
     value: string;
     onChange: Dispatch<SetStateAction<string>>;
+    options: string[];
 }) {
     return (
         <FormElement id={id} label={label} className={className}>
-            <input
+            <select
                 id={id}
-                type={type}
                 required={required}
                 className="bg-[#181818] border-[#353535] border-1 rounded-md py-1 px-2 text-sm outline-none"
                 value={value}
                 onChange={(event) => onChange(event.target.value)}
-            />
+            >
+                {options.map((option) => (
+                    <option key={option} value={option}>
+                        {option}
+                    </option>
+                ))}
+            </select>
         </FormElement>
     );
 }

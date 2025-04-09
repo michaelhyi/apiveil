@@ -7,6 +7,7 @@ import { useUser } from "@/context/UserContext";
 import ProxyHttpClient from "@/http/ProxyHttpClient";
 import Proxy from "@/types/Proxy";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
@@ -38,9 +39,12 @@ export default function Dashboard() {
             <main className="px-20 py-18 flex flex-col">
                 <nav className="flex items-center">
                     <h1 className="font-bold text-4xl">Developer Dashboard</h1>
-                    <button className="ml-auto bg-white text-black font-semibold px-3 py-2 rounded-lg cursor-pointer mr-8 text-sm">
+                    <Link
+                        href="/proxy/create"
+                        className="ml-auto bg-white text-black font-semibold px-3 py-2 rounded-lg cursor-pointer mr-8 text-sm"
+                    >
                         Create Proxy +
-                    </button>
+                    </Link>
                     <button className="flex items-center gap-2">
                         <Image
                             src="/assets/avatar.svg"

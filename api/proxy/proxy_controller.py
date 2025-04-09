@@ -27,9 +27,9 @@ def create_proxy():
         user_id,
         request.json['name'],
         request.json['cloudProvider'],
-        request.json['cloudRegion'],
+        request.json['cloudProviderRegion'],
         request.json['pricingPlan'],
         request.json['apiProtocol'],
-        request.json['apiBaseUrl']
+        request.json['baseApiUrl']
     )
     return { 'proxyId': proxy_id }, 201
