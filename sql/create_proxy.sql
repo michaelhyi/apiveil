@@ -19,3 +19,4 @@ CREATE TABLE IF NOT EXISTS public.proxy (
 
 ALTER TABLE public.proxy ADD proxy_url VARCHAR(255);
 ALTER TABLE public.proxy ALTER COLUMN proxy_url SET NOT NULL;
+ALTER TABLE public.proxy ADD status VARCHAR(50) NOT NULL DEFAULT 'Running';

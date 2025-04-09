@@ -45,6 +45,7 @@ class ProxyService():
         return ProxyDao.create_proxy(
             user_id,
             name,
+            'Running',
             cloud_provider,
             cloud_region,
             pricing_plan,

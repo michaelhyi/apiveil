@@ -14,13 +14,13 @@ class User():
 
     def to_dict(self) -> dict:
         return {
-            "user_id": self.user_id,
+            "userId": self.user_id,
             "name": self.name,
             "email": self.email,
             "password": self.password,
             "provider": self.provider,
             "role": self.role,
-            "is_active": self.is_active,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
-            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+            "isActive": self.is_active,
+            "createdAt": self.created_at.isoformat() if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
         }

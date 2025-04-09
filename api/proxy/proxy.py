@@ -16,6 +16,7 @@ class Proxy:
         server_id: str,
         created_at: datetime,
         updated_at: datetime,
+        status: str,
     ):
         self.proxy_id = proxy_id
         self.user_id = user_id
@@ -30,20 +31,22 @@ class Proxy:
         self.server_id = server_id
         self.created_at = created_at
         self.updated_at = updated_at
+        self.status = status
 
     def to_dict(self) -> dict:
         return {
-            "proxy_id": self.proxy_id,
-            "user_id": self.user_id,
+            "proxyId": self.proxy_id,
+            "userId": self.user_id,
             "name": self.name,
-            "cloud_provider": self.cloud_provider,
-            "cloud_region": self.cloud_region,
-            "pricing_plan": self.pricing_plan,
-            "api_protocol": self.api_protocol,
-            "api_base_url": self.api_base_url,
-            "proxy_url": self.proxy_url,
-            "ip_address": self.ip_address,
-            "server_id": self.server_id,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
-            "updated_at": self.updated_at.isoformat() if self.updated_at else None,
+            "status": self.status,
+            "cloudProvider": self.cloud_provider,
+            "cloudRegion": self.cloud_region,
+            "pricingPlan": self.pricing_plan,
+            "apiProtocol": self.api_protocol,
+            "apiBaseUrl": self.api_base_url,
+            "proxyUrl": self.proxy_url,
+            "ipAddress": self.ip_address,
+            "serverId": self.server_id,
+            "createdAt": self.created_at.isoformat() if self.created_at else None,
+            "updatedAt": self.updated_at.isoformat() if self.updated_at else None,
         }

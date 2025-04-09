@@ -45,6 +45,7 @@ class ProxyDao():
     def create_proxy(
         user_id: int,
         name: str,
+        status: str,
         cloud_provider: str,
         cloud_region: str,
         pricing_plan: str,
@@ -56,8 +57,8 @@ class ProxyDao():
     ) -> int:
         with connection.cursor() as cursor:
             cursor.execute(
-                "INSERT INTO public.proxy (user_id, name, cloud_provider, cloud_region, pricing_plan, api_protocol, api_base_url, proxy_url, ip_address, server_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING proxy_id", 
-                (user_id, name, cloud_provider, cloud_region, pricing_plan, api_protocol, api_base_url, proxy_url, ip_address, server_id)
+                "INSERT INTO public.proxy (user_id, name, status, cloud_provider, cloud_region, pricing_plan, api_protocol, api_base_url, proxy_url, ip_address, server_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING proxy_id", 
+                (user_id, name, status, cloud_provider, cloud_region, pricing_plan, api_protocol, api_base_url, proxy_url, ip_address, server_id)
             )
             proxy_id = cursor.fetchone()[0]
             connection.commit()
