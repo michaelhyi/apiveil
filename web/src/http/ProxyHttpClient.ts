@@ -21,6 +21,28 @@ export default class ProxyHttpClient {
         }
     }
 
+    static async getProxyWithLogsByProxyId(proxyId: string) {
+        const response = await fetch(
+            `http://localhost:8080/api/v1/proxies/${proxyId}/with-logs`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                credentials: "include",
+            },
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+            return data;
+        } else {
+            throw new Error(data.error);
+        }
+    }
+
     static async createProxy({
         name,
         cloudProvider,
