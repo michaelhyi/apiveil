@@ -124,10 +124,12 @@ g++ -std=c++17 -IC:\vcpkg\installed\x64-windows\include -LC:\vcpkg\installed\x64
    ```json
    {"processed": "The capital of France is Paris."}
    ```
-## How to populate RAG Chunks:
+
+## How to set up RAG and populate chunks:
 1. Go to api/open_ai/rag
-2. Run 'streamlit run app.py'
-3. This will spin up a frontend for you to populate chunks with documentation and other static context
+2. Run 'pip install -r requirements.txt' onto your virtual environment
+3. Run 'streamlit run app.py'
+4. This will spin up a frontend for you to populate chunks with documentation and other static context
 
 
 ### Notes
