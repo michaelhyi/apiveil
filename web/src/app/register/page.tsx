@@ -8,9 +8,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import GuestRoute from "../../components/GuestRoute";
+import { useUser } from "@/context/UserContext";
 
 export default function Register() {
     const router = useRouter();
+    const { setUserId } = useUser();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -21,18 +23,19 @@ export default function Register() {
             e.preventDefault();
 
             try {
-                await AuthHttpClient.register(
+                const { user } = await AuthHttpClient.register(
                     name,
                     email,
                     password,
                     confirmPassword,
                 );
+                setUserId(user.userId);
                 router.push("/dashboard");
             } catch {
             } finally {
             }
         },
-        [name, email, password, confirmPassword, router],
+        [name, email, password, confirmPassword, setUserId, router],
     );
 
     return (
