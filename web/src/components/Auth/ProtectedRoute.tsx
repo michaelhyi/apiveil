@@ -1,3 +1,5 @@
+"use client";
+
 import AuthHttpClient from "@/http/AuthHttpClient";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

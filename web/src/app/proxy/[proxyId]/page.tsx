@@ -26,9 +26,7 @@ export default function ProxyPage({
 
                 setData(proxyWithLogs);
 
-                const ws = new WebSocket(
-                    `http://${proxyWithLogs.proxyUrl}/ws`
-                );
+                const ws = new WebSocket(`http://${proxyWithLogs.proxyUrl}/ws`);
 
                 ws.onmessage = (e) => {
                     const log = JSON.parse(e.data);

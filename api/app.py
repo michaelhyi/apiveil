@@ -3,6 +3,7 @@ from flask_cors import CORS
 from api.auth.auth_controller import auth_bp
 from api.proxy.proxy_controller import proxy_bp
 from api.proxy_log.proxy_log_controller import proxy_log_bp
+from api.pricing.pricing_controller import pricing_bp
 from api.util import UnauthorizedError
 
 app = Flask(__name__)
@@ -17,6 +18,7 @@ CORS(
 app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
 app.register_blueprint(proxy_bp, url_prefix='/api/v1/proxies')
 app.register_blueprint(proxy_log_bp, url_prefix='/api/v1/proxies')
+app.register_blueprint(pricing_bp, url_prefix='/api/v1/pricing')
 
 @app.before_request
 def handle_options_request():
