@@ -7,6 +7,7 @@ import ProxyHttpClient from "@/http/ProxyHttpClient";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
+import Spinner from "@/components/Spinner";
 
 export default function CreateProxy() {
     const router = useRouter();
@@ -16,12 +17,14 @@ export default function CreateProxy() {
     const [pricingPlan, setPricingPlan] = useState("");
     const [baseApiUrl, setBaseApiUrl] = useState("");
     const [apiProtocol, setApiProtocol] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = useCallback(
         async (e: React.FormEvent) => {
             e.preventDefault();
 
             try {
+                setLoading(true);
                 const { proxyId } = await ProxyHttpClient.createProxy({
                     name,
                     cloudProvider,
@@ -33,6 +36,7 @@ export default function CreateProxy() {
                 router.push(`/proxy/${proxyId}`);
             } catch {
             } finally {
+                setLoading(false);
             }
         },
         [
@@ -136,7 +140,13 @@ export default function CreateProxy() {
                             type="submit"
                             className="bg-white text-black font-semibold w-[96px] py-2 rounded-lg cursor-pointer"
                         >
-                            Create
+                            {loading ? (
+                                <div className="flex items-center justify-center">
+                                    <Spinner />
+                                </div>
+                            ) : (
+                                "Create"
+                            )}
                         </button>
                         <Link
                             href="/dashboard"

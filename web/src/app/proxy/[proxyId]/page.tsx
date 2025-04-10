@@ -6,7 +6,7 @@ import ProxyLog from "@/components/ViewProxy/ProxyLog";
 import ProxyHttpClient from "@/http/ProxyHttpClient";
 import { ProxyWithLogs } from "@/utils/types";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function ProxyPage({
     params,
@@ -16,6 +16,8 @@ export default function ProxyPage({
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<ProxyWithLogs | null>(null);
     const [expanded, setExpanded] = useState<number>(-1);
+    const existingLogIds = useRef(new Set());
+
     useEffect(() => {
         (async () => {
             try {
@@ -26,8 +28,6 @@ export default function ProxyPage({
                 setData(proxyWithLogs);
 
                 const ws = new WebSocket(`http://${proxyWithLogs.proxyUrl}/ws`);
-
-                const existingLogIds = new Set();
 
                 ws.onmessage = (e) => {
                     const log = JSON.parse(e.data);
@@ -47,8 +47,8 @@ export default function ProxyPage({
                     log.requestHeaders = JSON.parse(log.requestHeaders);
                     log.responseHeaders = JSON.parse(log.responseHeaders);
 
-                    if (!existingLogIds.has(log.proxyLogId)) {
-                        existingLogIds.add(log.proxyLogId);
+                    if (!existingLogIds.current.has(log.proxyLogId)) {
+                        existingLogIds.current.add(log.proxyLogId);
                         setData((prevData) => {
                             if (prevData) {
                                 return {

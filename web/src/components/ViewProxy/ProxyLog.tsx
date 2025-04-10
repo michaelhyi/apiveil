@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import ProxyLogTabs from "./ProxyLogTabs";
 import JsonView from "./JsonView";
+import Spinner from "@/components/Spinner";
 
 export default function ProxyLog({
     log,
@@ -15,6 +16,7 @@ export default function ProxyLog({
     expanded: number;
     setExpanded: Dispatch<SetStateAction<number>>;
 }) {
+    const [loading, setLoading] = useState(false);
     const [selected, setSelected] = useState(0);
     const [analysis, setAnalysis] = useState<string | null>(null);
 
@@ -27,10 +29,17 @@ export default function ProxyLog({
     }, [log.proxyLogId, expanded, setExpanded]);
 
     const handleAnalyze = useCallback(async () => {
-        const { analysis } = await ProxyLogHttpClient.analyzeProxyLog(
-            log.proxyLogId.toString(),
-        );
-        setAnalysis(analysis);
+        setLoading(true);
+        try {
+            const { analysis } = await ProxyLogHttpClient.analyzeProxyLog(
+                log.proxyLogId.toString(),
+            );
+            setAnalysis(analysis);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     }, [log, setAnalysis]);
 
     return (
@@ -96,7 +105,11 @@ export default function ProxyLog({
                                 onClick={handleAnalyze}
                                 className="h-12 border-1 rounded-md px-2 text-sm cursor-pointer"
                             >
-                                Analyze with AI
+                                {loading ? (
+                                    <Spinner />
+                                ) : (
+                                    "Analyze with AI"
+                                )}
                             </button>
                             <p className="mt-4">{analysis}</p>
                         </div>
