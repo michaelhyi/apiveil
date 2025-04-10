@@ -16,7 +16,8 @@
 using namespace Poco::JSON;
 using namespace Poco;
 
-const std::string BASE_API_HOST = "api.openweathermap.org";
+const std::string BASE_API_HOST = std::getenv("BASE_API_HOST");
+const std::string PROXY_ID = std::getenv("PROXY_ID");
 
 void ProxyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse &response)
 {
@@ -44,7 +45,7 @@ void ProxyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRe
         std::string network_response_body = baseResponseStream.str();
 
         ProxyLog network_log = ProxyLog(
-            5, // TODO: Replace with actual proxy ID
+            std::stoi(PROXY_ID),
             request.getMethod(),
             request.getURI(),
             network_response.getStatus(),

@@ -1,12 +1,27 @@
 #include <iostream>
 #include <cstdio>
+#include <cstdlib>
 #include "proxy_log_dao.h"
 
 PGconn* ProxyLogDao::conn = nullptr;
 
 int ProxyLogDao::setConnnection() {
-    const char *conninfo = "host=localhost dbname=apiveil user=postgres";
-    conn = PQconnectdb(conninfo);
+    const char* host = std::getenv("DB_HOST");
+    const char* dbname = std::getenv("DB_NAME");
+    const char* user = std::getenv("DB_USER");
+    const char* password = std::getenv("DB_PASSWORD");
+
+    std::string conninfo = "host=";
+    conninfo += (host ? host : "localhost");
+    conninfo += " dbname=";
+    conninfo += (dbname ? dbname : "apiveil");
+    conninfo += " user=";
+    conninfo += (user ? user : "postgres");
+    if (password) {
+        conninfo += " password=";
+        conninfo += password;
+    }
+    conn = PQconnectdb(conninfo.c_str());
 
     if (PQstatus(conn) != CONNECTION_OK) {
         fprintf(stderr, "Connection to database failed: %s", PQerrorMessage(conn));
