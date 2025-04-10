@@ -16,7 +16,6 @@ export default function ProxyPage({
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<ProxyWithLogs | null>(null);
     const [expanded, setExpanded] = useState<number>(-1);
-
     useEffect(() => {
         (async () => {
             try {
@@ -27,6 +26,8 @@ export default function ProxyPage({
                 setData(proxyWithLogs);
 
                 const ws = new WebSocket(`http://${proxyWithLogs.proxyUrl}/ws`);
+
+                const existingLogIds = new Set();
 
                 ws.onmessage = (e) => {
                     const log = JSON.parse(e.data);
@@ -46,15 +47,18 @@ export default function ProxyPage({
                     log.requestHeaders = JSON.parse(log.requestHeaders);
                     log.responseHeaders = JSON.parse(log.responseHeaders);
 
-                    setData((prevData) => {
-                        if (prevData) {
-                            return {
-                                ...prevData,
-                                logs: [...prevData.logs, log],
-                            };
-                        }
-                        return prevData;
-                    });
+                    if (!existingLogIds.has(log.proxyLogId)) {
+                        existingLogIds.add(log.proxyLogId);
+                        setData((prevData) => {
+                            if (prevData) {
+                                return {
+                                    ...prevData,
+                                    logs: [...prevData.logs, log],
+                                };
+                            }
+                            return prevData;
+                        });
+                    }
                 };
 
                 ws.onerror = (err) => {
