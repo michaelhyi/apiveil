@@ -21,8 +21,8 @@ export default function LoginPage() {
             e.preventDefault();
 
             try {
-                const { user } = await AuthHttpClient.login(email, password);
-                setUserId(user.userId);
+                const { userId } = await AuthHttpClient.login(email, password);
+                setUserId(userId);
                 router.push("/dashboard");
             } catch {
             } finally {

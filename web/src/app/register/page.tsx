@@ -23,13 +23,13 @@ export default function Register() {
             e.preventDefault();
 
             try {
-                const { user } = await AuthHttpClient.register(
+                const { userId } = await AuthHttpClient.register(
                     name,
                     email,
                     password,
                     confirmPassword,
                 );
-                setUserId(user.userId);
+                setUserId(userId);
                 router.push("/dashboard");
             } catch {
             } finally {
