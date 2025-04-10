@@ -11,11 +11,11 @@ class Proxy:
         pricing_plan: str,
         api_protocol: str,
         api_base_url: str,
-        proxy_url: str,
         ip_address: str,
         server_id: str,
         created_at: datetime,
         updated_at: datetime,
+        proxy_url: str,
         status: str,
     ):
         self.proxy_id = proxy_id

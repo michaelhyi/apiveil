@@ -124,7 +124,7 @@ export default function ProxyPage({
                             <span className="font-medium">Proxy URL:</span>
                             &nbsp;
                             <span className="text-[#A5A2A2]">
-                                https://0bd62e53-cf86-4734-ab94-4eb4dd62c974.apiveil.com/
+                                {data.proxyUrl}
                             </span>
                         </p>
                         <p>

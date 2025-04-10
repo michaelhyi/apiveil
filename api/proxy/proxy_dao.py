@@ -1,11 +1,13 @@
 import psycopg2
 from api.proxy.proxy import Proxy
 from api.proxy.proxy_with_logs import ProxyWithLogs
+import os
 
 connection = psycopg2.connect(
-    host="localhost",
+    host=os.environ["DB_HOST"],
     database="apiveil",
-    user="postgres"
+    user="postgres",
+    password=os.environ["DB_PASSWORD"]
 )
 
 class ProxyDao():
