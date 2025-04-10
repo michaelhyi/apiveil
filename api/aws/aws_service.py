@@ -63,7 +63,7 @@ class AwsService:
 
         docker_cmd = f"""
         docker run -d \\
-          -p 4000:4000 \\
+          -p 80:4000 \\
           -e DB_HOST={os.environ["DB_HOST"]} \\
           -e DB_NAME=apiveil \\
           -e DB_USER=postgres \\
@@ -72,5 +72,8 @@ class AwsService:
           -e PROXY_ID={proxy_id} \\
           michaelyi/apiveil:amd64
         """
+
+        stdin, stdout, stderr = ssh.exec_command(docker_cmd)
+        stdout.read()
         
         ssh.close()
