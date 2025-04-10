@@ -55,9 +55,10 @@ void ProxyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRe
             network_response_body
         );
 
+        std::cout << "network log: " << network_log.toJson() << "\n";
+
         ProxyLogDao::createProxyLog(&network_log);
 
-        std::cout << "network log: " << network_log.toJson() << "\n";
 
         WebSocketManager::getInstance().broadcastMessage(network_log.toJson());
 

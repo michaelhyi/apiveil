@@ -67,8 +67,8 @@ class ProxyService():
             ami_id=UBUNTU_X86_64_AMI_ID,
             instance_type="t2.micro",
             key_name="apiveil",
-            security_group_ids=[os.environ["APIVEIL_SECURITY_GROUP_ID"]],
-            subnet_id=os.environ["APIVEIL_SUBNET_ID"]
+            security_group_ids=[os.environ["SECURITY_GROUP_ID"]],
+            subnet_id=os.environ["SUBNET_ID"]
         )
 
         proxy_id = ProxyDao.create_proxy(
@@ -84,5 +84,7 @@ class ProxyService():
             '',
             instance.id
         )
+
+        AwsService.init_instance(instance, api_base_url, proxy_id)
 
         return proxy_id

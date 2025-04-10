@@ -1,5 +1,6 @@
 import psycopg2
 from api.proxy_log.proxy_log import ProxyLog
+import os
 
 connection = psycopg2.connect(
     host=os.environ["DB_HOST"],

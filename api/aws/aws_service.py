@@ -1,6 +1,7 @@
 import boto3
 import time
 import paramiko
+import os
 
 class AwsService:
     @staticmethod
@@ -24,46 +25,52 @@ class AwsService:
         return instance
 
     @staticmethod
-    def execute_commands_on_instance(instance, commands: list[str]):
-        time.sleep(10)
-        
-        key = paramiko.RSAKey.from_private_key_file("apiveil.pem")
+    def init_instance(instance, base_api_host: str, proxy_id: int):
+        time.sleep(180)
+
+        api_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        key_path = os.path.join(api_dir, "apiveil.pem")
+        key = paramiko.RSAKey.from_private_key_file(key_path)
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         
-        ssh.connect(hostname=instance.public_ip_address, username="root", pkey=key)
+        ssh.connect(hostname=instance.public_ip_address, username="ubuntu", pkey=key)
         
-        # Update package lists
-        stdin, stdout, stderr = ssh.exec_command("apt-get update")
+        stdin, stdout, stderr = ssh.exec_command("sudo apt-get update")
         stdout.read()
         
-        # Install Docker
-        stdin, stdout, stderr = ssh.exec_command("apt-get install -y docker.io")
+        stdin, stdout, stderr = ssh.exec_command("sudo apt-get install -y docker.io")
+        stdout.read()
+
+        stdin, stdout, stderr = ssh.exec_command("sudo systemctl start docker && sudo systemctl enable docker")
         stdout.read()
         
-        # Start and enable Docker service
-        stdin, stdout, stderr = ssh.exec_command("systemctl start docker && systemctl enable docker")
+        stdin, stdout, stderr = ssh.exec_command("sudo usermod -aG docker ubuntu")
         stdout.read()
         
-        # Pull Docker image
-        stdin, stdout, stderr = ssh.exec_command("docker pull apiveil/proxy:latest")
+        # Ensure Docker starts on boot
+        stdin, stdout, stderr = ssh.exec_command("sudo systemctl enable docker")
         stdout.read()
+    
+        ssh.close()
+        time.sleep(5)
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(hostname=instance.public_ip_address, username="ubuntu", pkey=key)
         
-        # Run Docker container with environment variables
-        stdin, stdout, stderr = ssh.exec_command("""
+        stdin, stdout, stderr = ssh.exec_command("docker pull michaelyi/apiveil:amd64")
+        stdout.read()
+
+        docker_cmd = f"""
         docker run -d \\
-          --name apiveil-proxy \\
-          -p 8080:8080 \\
-          -e API_KEY="your_api_key" \\
-          -e API_SECRET="your_api_secret" \\
-          -e TARGET_URL="https://api.target.com" \\
-          apiveil/proxy:latest
-        """)
-        
-        # Collect final output and errors
-        output = stdout.read().decode()
-        error = stderr.read().decode()
+          -p 4000:4000 \\
+          -e DB_HOST={os.environ["DB_HOST"]} \\
+          -e DB_NAME=apiveil \\
+          -e DB_USER=postgres \\
+          -e DB_PASSWORD={os.environ["DB_PASSWORD"]} \\
+          -e BASE_API_HOST={base_api_host} \\
+          -e PROXY_ID={proxy_id} \\
+          michaelyi/apiveil:amd64
+        """
         
         ssh.close()
-        
-        return output, error

@@ -1,5 +1,6 @@
 import psycopg2
 from api.user.user import User
+import os
 
 connection = psycopg2.connect(
     host=os.environ["DB_HOST"],
