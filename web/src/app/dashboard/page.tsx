@@ -9,6 +9,7 @@ import { Proxy } from "@/utils/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import UserAvatar from "@/components/Dashboard/UserAvatar";
 
 export default function Dashboard() {
     const { userId } = useUser();
@@ -45,15 +46,7 @@ export default function Dashboard() {
                     >
                         Create Proxy +
                     </Link>
-                    <button className="flex items-center gap-2">
-                        <Image
-                            src="/assets/avatar.svg"
-                            height={37.5}
-                            width={37.5}
-                            alt="avatar"
-                        />
-                        <p className="text-xs">&#9660;</p>
-                    </button>
+                    <UserAvatar />
                 </nav>
                 <h3 className="text-[#A5A2A2]">
                     Manage all running reverse proxies and servers.
