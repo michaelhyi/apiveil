@@ -1,4 +1,6 @@
 #include <vector>
+#include <string>
+#include <mutex>
 
 #include <Poco/Net/WebSocket.h>
 
