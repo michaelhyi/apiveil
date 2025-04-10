@@ -1,7 +1,7 @@
 export default class PricingHttpClient {
-    static async subscribeToEnterprisePlan() {
+    static async subscribeToEnterprisePlan(userId: string) {
         const response = await fetch(
-            "http://localhost:8080/api/v1/pricing/subscribe/enterprise",
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/pricing/${userId}/subscribe/enterprise`,
             {
                 method: "POST",
                 credentials: "include",

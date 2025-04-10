@@ -42,3 +42,9 @@ class UserDao():
             user_id = cursor.fetchone()[0]
             connection.commit()
             return user_id
+
+    @staticmethod
+    def update_user_pricing_plan(user_id: int, pricing_plan: str):
+        with connection.cursor() as cursor:
+            cursor.execute("UPDATE public.user SET pricing_plan = %s WHERE user_id = %s", (pricing_plan, user_id))
+            connection.commit()

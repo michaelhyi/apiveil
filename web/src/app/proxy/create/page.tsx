@@ -49,7 +49,10 @@ export default function CreateProxy() {
     return (
         <ProtectedRoute>
             <main className="px-20 py-18 flex flex-col">
-                <h1 className="font-bold text-4xl">Create New Proxy</h1>
+                <Link className="text-[#939393] text-sm" href="/dashboard">
+                    &larr;&nbsp;&nbsp;Back to Home
+                </Link>
+                <h1 className="mt-3 font-bold text-4xl">Create New Proxy</h1>
                 <h3 className="text-[#A5A2A2]">
                     Empower your API by spinning up a new reverse proxy using
                     your cloud provider of choice.

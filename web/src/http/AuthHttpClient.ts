@@ -1,7 +1,7 @@
 export default class AuthHttpClient {
     static async login(email: string, password: string) {
         const response = await fetch(
-            "http://localhost:8080/api/v1/auth/login",
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/login`,
             {
                 method: "POST",
                 headers: {
@@ -29,7 +29,7 @@ export default class AuthHttpClient {
         confirmPassword: string,
     ) {
         const response = await fetch(
-            "http://localhost:8080/api/v1/auth/register",
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/register`,
             {
                 method: "POST",
                 headers: {
@@ -56,14 +56,17 @@ export default class AuthHttpClient {
     }
 
     static async getMe() {
-        const response = await fetch("http://localhost:8080/api/v1/auth/me", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/me`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                credentials: "include",
             },
-            credentials: "include",
-        });
+        );
 
         const data = await response.json();
 
@@ -75,7 +78,7 @@ export default class AuthHttpClient {
     }
 
     static async logout() {
-        await fetch("http://localhost:8080/api/v1/auth/logout", {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/logout`, {
             method: "POST",
             headers: {
                 Accept: "application/json",

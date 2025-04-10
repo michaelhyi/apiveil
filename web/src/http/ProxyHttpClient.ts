@@ -1,7 +1,7 @@
 export default class ProxyHttpClient {
     static async getAllProxiesByUserId(userId: string) {
         const response = await fetch(
-            `http://localhost:8080/api/v1/proxies/${userId}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/proxies/${userId}`,
             {
                 method: "GET",
                 headers: {
@@ -23,7 +23,7 @@ export default class ProxyHttpClient {
 
     static async getProxyWithLogsByProxyId(proxyId: string) {
         const response = await fetch(
-            `http://localhost:8080/api/v1/proxies/${proxyId}/with-logs`,
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/proxies/${proxyId}/with-logs`,
             {
                 method: "GET",
                 headers: {
@@ -58,22 +58,25 @@ export default class ProxyHttpClient {
         apiProtocol: string;
         baseApiUrl: string;
     }) {
-        const response = await fetch("http://localhost:8080/api/v1/proxies", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/proxies`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    name,
+                    cloudProvider,
+                    cloudProviderRegion,
+                    pricingPlan,
+                    apiProtocol,
+                    baseApiUrl,
+                }),
             },
-            credentials: "include",
-            body: JSON.stringify({
-                name,
-                cloudProvider,
-                cloudProviderRegion,
-                pricingPlan,
-                apiProtocol,
-                baseApiUrl,
-            }),
-        });
+        );
 
         const data = await response.json();
 

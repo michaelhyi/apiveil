@@ -6,7 +6,7 @@ PRICE_ID = os.getenv("STRIPE_PRICE_ID")
 
 class StripeService:
     @staticmethod
-    def create_checkout_session(name: str, amount: int, origin: str):
+    def create_checkout_session(success_url: str, cancel_url: str):
         session = stripe.checkout.Session.create(
             submit_type='subscribe',
             mode='subscription',
@@ -17,8 +17,8 @@ class StripeService:
                     'quantity': 1,
                 },
             ],
-            success_url=f"{origin}/result?session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=f"{origin}/result?session_id={{CHECKOUT_SESSION_ID}}",
+            success_url=success_url,
+            cancel_url=cancel_url,
         )
 
         return session
