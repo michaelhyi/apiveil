@@ -10,13 +10,15 @@
 
 using namespace Poco::Net;
 
+const std::string PORT = std::getenv("PORT") ? std::getenv("PORT") : "4000";
+
 int ProxyServerApp::main(const std::vector<std::string> &args)
 {
     Poco::Net::initializeSSL();
-    ServerSocket svs(4000);
+    ServerSocket svs(std::stoi(PORT));
     HTTPServer server(new ProxyRequestHandlerFactory, svs, new HTTPServerParams);
     server.start();
-    std::cout << "Proxy server listening on port 4000" << std::endl;
+    std::cout << "Proxy server listening on port " << PORT << std::endl;
 
     waitForTerminationRequest();
     server.stop();

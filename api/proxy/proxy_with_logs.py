@@ -13,10 +13,10 @@ class ProxyWithLogs(Proxy):
             proxy.api_protocol,
             proxy.api_base_url,
             '',
-            '',
-            '',
+            proxy.server_id,
             proxy.created_at,
             proxy.updated_at,
+            proxy.proxy_url,
             proxy.status
         )
         self.logs = logs

@@ -4,6 +4,10 @@ from api.proxy.proxy_with_logs import ProxyWithLogs
 from api.proxy_log.proxy_log_dao import ProxyLogDao
 from api.user.user_dao import UserDao
 from api.util import valid_string
+from api.aws.aws_service import AwsService
+import os
+
+UBUNTU_X86_64_AMI_ID = "ami-04f167a56786e4b09"
 
 class ProxyService():
     @staticmethod
@@ -58,7 +62,16 @@ class ProxyService():
         if ProxyDao.get_proxy_by_name(name):
             raise ValueError("a proxy with that name already exists")
 
-        return ProxyDao.create_proxy(
+        instance = AwsService.create_instance(
+            region=cloud_region,
+            ami_id=UBUNTU_X86_64_AMI_ID,
+            instance_type="t2.micro",
+            key_name="apiveil",
+            security_group_ids=[os.environ["SECURITY_GROUP_ID"]],
+            subnet_id=os.environ["SUBNET_ID"]
+        )
+
+        proxy_id = ProxyDao.create_proxy(
             user_id,
             name,
             'Running',
@@ -67,7 +80,11 @@ class ProxyService():
             pricing_plan,
             api_protocol,
             api_base_url,
+            instance.public_dns_name,
             '',
-            '',
-            ''
+            instance.id
         )
+
+        AwsService.init_instance(instance, api_base_url, proxy_id)
+
+        return proxy_id

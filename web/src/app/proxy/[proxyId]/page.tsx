@@ -1,14 +1,18 @@
 "use client";
 
 import Loading from "@/components/Loading";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import ProxyLog from "@/components/ProxyLog";
+import ProtectedRoute from "@/components/Auth/ProtectedRoute";
+import ProxyLog from "@/components/ViewProxy/ProxyLog";
 import ProxyHttpClient from "@/http/ProxyHttpClient";
-import { ProxyWithLogs } from "@/types/ProxyWithLogs";
+import { ProxyWithLogs } from "@/utils/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function ProxyPage({ params }: { params: { proxyId: string } }) {
+export default function ProxyPage({
+    params,
+}: {
+    params: Promise<{ proxyId: string }>;
+}) {
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<ProxyWithLogs | null>(null);
     const [expanded, setExpanded] = useState<number>(-1);
@@ -22,7 +26,9 @@ export default function ProxyPage({ params }: { params: { proxyId: string } }) {
 
                 setData(proxyWithLogs);
 
-                const ws = new WebSocket("http://localhost:4000/ws");
+                const ws = new WebSocket(
+                    `http://${proxyWithLogs.proxyUrl}/ws`
+                );
 
                 ws.onmessage = (e) => {
                     const log = JSON.parse(e.data);
@@ -41,7 +47,6 @@ export default function ProxyPage({ params }: { params: { proxyId: string } }) {
 
                     log.requestHeaders = JSON.parse(log.requestHeaders);
                     log.responseHeaders = JSON.parse(log.responseHeaders);
-                    console.log(log);
 
                     setData((prevData) => {
                         if (prevData) {
@@ -121,7 +126,7 @@ export default function ProxyPage({ params }: { params: { proxyId: string } }) {
                             <span className="font-medium">Proxy URL:</span>
                             &nbsp;
                             <span className="text-[#A5A2A2]">
-                                https://0bd62e53-cf86-4734-ab94-4eb4dd62c974.apiveil.com/
+                                {data.proxyUrl}
                             </span>
                         </p>
                         <p>

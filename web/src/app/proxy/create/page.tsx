@@ -1,8 +1,8 @@
 "use client";
 
-import Input from "@/components/Input";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import Select from "@/components/Select";
+import Input from "@/components/Forms/Input";
+import ProtectedRoute from "@/components/Auth/ProtectedRoute";
+import Select from "@/components/Forms/Select";
 import ProxyHttpClient from "@/http/ProxyHttpClient";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
