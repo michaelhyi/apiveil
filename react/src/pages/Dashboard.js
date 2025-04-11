@@ -5,7 +5,7 @@ function Dashboard() {
   const navigate = useNavigate();
 
   const handleCreateProxy = () => {
-    navigate('/create_proxy_form');
+    navigate('/proxy/create');
   };
 
   const handleRowClick = (proxyId) => {

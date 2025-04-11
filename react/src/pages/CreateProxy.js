@@ -1,7 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./create-proxy.css";
 
 const CreateProxy = () => {
+  const navigate = useNavigate();
+
+  const handleCancel = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <div className="createProxyContainer">
       <h1 className="createProxyTitle">Create New Proxy</h1>
@@ -32,7 +39,9 @@ const CreateProxy = () => {
           </div>
           <div className="createProxyButtonRow">
             <button type="submit" className="createProxyButton">Create</button>
-            <button type="button" className="cancelProxyButton">Cancel</button>
+            <button type="button" className="cancelProxyButton" onClick={handleCancel}>
+              Cancel
+            </button>
           </div>
         </div>
         <div className="createProxyFormColumn createProxyRightColumn">
