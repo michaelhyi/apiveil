@@ -1,5 +1,22 @@
 # APIVeil
 
+APIVeil is an AI-powered reverse proxy for monitoring and debugging APIs. It provides an interface where you can easily onboard reverse proxies, which will subsequently spin up AWS EC2 instances. Then, any requests sent to the proxy URL will be forwarded to the base API URL, with all API traffic logged in the interface. Users can then utilize LLMs and RAG to assist with debugging while using API documentation and traffic as context.
+
+This project was made for Georgia Tech's CS 4723: Inter Capstone Design.
+
+## Tech Stack
+
+- C++
+- Poco
+- WebSocket
+- Python
+- AWS
+- PostgreSQL
+- Flask
+- RAG
+- LangChain
+- Next.js
+
 Currently APIVeil consists of two servers:
 
 * **Proxy Server (proxy.cpp)**: Listens on port 3000 for incoming HTTP requests. Sends the request body to the OpenAI API (GPT-3.5-turbo) for processing. Wraps the processed text in JSON and sends it to a base API (here, a simple echo server). Returns the base API’s response back to the original client.
